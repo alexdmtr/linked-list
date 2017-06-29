@@ -1,6 +1,10 @@
 #ifndef _INCL_GUARD_LINKED_LIST_HPP
 #define _INCL_GUARD_LINKED_LIST_HPP
 #include <iostream>
+#include <functional>
+#include <memory>
+
+using namespace std;
 
 template<typename T>
 class linked_list
@@ -9,8 +13,8 @@ private:
     struct node
     {
         T value;
-        node* next;
-        node* prev;
+        shared_ptr<node> next;
+        shared_ptr<node> prev;
 
         node(const T x)
         {
@@ -20,8 +24,8 @@ private:
         }
     };
 
-    node* first;
-    node* last;
+    shared_ptr<node> first;
+    shared_ptr<node> last;
 
 public:
     linked_list()
@@ -29,32 +33,28 @@ public:
         first = last = NULL;
     }
 
-    ~linked_list()
-    {
-        auto x = first;
-
-        while (x)
-        {
-            auto next = x->next;
-            delete x;
-
-            x = next;
-        }
-    }
-
     void push(const T x)
     {
         if (first == NULL)
         {
-            first = new node(x);
+            first = shared_ptr<node>(new node(x));
             last = first;
         }
         else
         {
-            auto new_node = new node(x);
+            auto new_node = shared_ptr<node>(new node(x));
             last->next = new_node;
             new_node->prev = last;
             last = new_node;
+        }
+    }
+
+    void remove(function<bool(T)> predicate)
+    {
+        auto x = first;
+        while (predicate(first->value))
+        {
+
         }
     }
 
