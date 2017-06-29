@@ -12,5 +12,6 @@ int main()
     v.push(12);
 
     v.print();
+    v.rev_print();
     return 0;
 }

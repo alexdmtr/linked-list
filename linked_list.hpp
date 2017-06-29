@@ -10,11 +10,13 @@ private:
     {
         T value;
         node* next;
+        node* prev;
 
         node(const T x)
         {
             this->value = x;
             this->next = NULL;
+            this->prev = NULL;
         }
     };
 
@@ -25,6 +27,19 @@ public:
     linked_list()
     {
         first = last = NULL;
+    }
+
+    ~linked_list()
+    {
+        auto x = first;
+
+        while (x)
+        {
+            auto next = x->next;
+            delete x;
+
+            x = next;
+        }
     }
 
     void push(const T x)
@@ -38,6 +53,7 @@ public:
         {
             auto new_node = new node(x);
             last->next = new_node;
+            new_node->prev = last;
             last = new_node;
         }
     }
@@ -48,6 +64,14 @@ public:
             std::cout << x->value << " ";
         std::cout << "\n";
     }
+
+    void rev_print()
+    {
+        for (auto x = last; x; x=x->prev)
+            std::cout << x->value << " ";
+        std::cout << "\n";
+    }
+
 };
 
 #endif
