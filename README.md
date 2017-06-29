@@ -6,6 +6,7 @@ C++ features used:
 - **auto** variabile inference
 - class templates
 - **std::function** type
+  - lambda functions
 - **std::shared_ptr** for safe memory ownership and deallocation control
 
 
