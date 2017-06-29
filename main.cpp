@@ -10,8 +10,22 @@ int main()
     v.push(15);
     v.push(17);
     v.push(12);
+    v.push(14);
+    v.push(21);
+
 
     v.print();
-    v.rev_print();
+
+    cout << "|| REMOVE ODDS\n";
+    v.remove([](int x) {
+        return x%2 == 1;
+    });
+
+    v.print();
+
+
+    // v.rev_print();
+
+    cout << "|| FINISH\n";
     return 0;
 }

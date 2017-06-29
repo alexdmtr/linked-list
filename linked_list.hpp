@@ -22,6 +22,10 @@ private:
             this->next = NULL;
             this->prev = NULL;
         }
+        ~node()
+        {
+            cout << ">> destruct " << this->value << "\n";
+        }
     };
 
     shared_ptr<node> first;
@@ -32,6 +36,19 @@ public:
     {
         first = last = NULL;
     }
+
+    ~linked_list()
+    {
+        auto x = first;
+        while (x)
+        {
+            auto next = x->next;
+            x->prev = x->next = NULL;
+            x = next;
+        }
+        // first = last = NULL;
+    }
+
 
     void push(const T x)
     {
@@ -51,21 +68,43 @@ public:
 
     void remove(function<bool(T)> predicate)
     {
-        auto x = first;
         while (predicate(first->value))
         {
+            auto next = first->next;
+            if (next)
+                next->prev = NULL;
+            first = next;
+        }
 
+
+        auto x = first;
+        while (x)
+        {
+            if (predicate(x->value))
+            {
+                auto prev = x->prev;
+                auto next = x->next;
+                prev->next = next;
+
+                if (next)
+                    next->prev = prev;
+
+                if (x == last)
+                    last = prev;
+            }
+
+            x = x->next;
         }
     }
 
-    void print()
+    void print() const
     {
         for (auto x = first; x; x=x->next)
             std::cout << x->value << " ";
         std::cout << "\n";
     }
 
-    void rev_print()
+    void rev_print() const
     {
         for (auto x = last; x; x=x->prev)
             std::cout << x->value << " ";
